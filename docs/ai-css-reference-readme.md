@@ -15,7 +15,7 @@ This reference was extracted from the default OroCommerce installation (Refreshi
 - **Class names stay the same** across all client installations
 - **Colors will differ** - each client has their own brand palette
 - **Sizes/spacing may differ** - clients customize these via SCSS variables
-- **The intent/purpose remains the same** - `.btn--destructive` is always for destructive actions, even if the exact red shade differs
+- **The intent/purpose remains the same** - `.btn--destructive` is always for destructive actions, regardless of the actual color
 
 When using this reference:
 - ✅ Trust the class names
@@ -24,6 +24,28 @@ When using this reference:
 - ❌ Do not assume exact pixel sizes
 - ❌ Do not use inline styles (page builder strips them)
 - ❌ Do not promise custom colors beyond what classes provide
+
+## Important: No Color Names in Descriptions
+
+**Never use actual color names (green, red, blue, teal, etc.) in class descriptions** unless the class name itself contains that color word.
+
+### Why?
+- Colors vary per client installation
+- The AI should not "know" what color something is - only its semantic purpose
+- Saying "red button" creates false expectations when the client's destructive color might be orange or purple
+
+### Correct Examples
+| Class | ✅ Good Description | ❌ Bad Description |
+|-------|---------------------|-------------------|
+| `.btn--destructive` | Destructive button for delete/remove actions | Red button for dangerous actions |
+| `.status-label--success` | Success/completed status | Green success label |
+| `.bg-primary-light` | Light primary tint for sections | Light teal background |
+| `.text-error` | Error state text color | Red error text |
+
+### Exception
+Only use color names when the class name explicitly contains the color:
+- `.red-label` → "Red colored label" ✅
+- `.bg-white` → "White background" ✅
 
 ## Data Sources
 
@@ -81,13 +103,60 @@ When using this reference:
 - Root container classes identified by template naming convention
 - Inner classes extracted from actual usage in templates
 
-### 6. Color System (For Developer Reference Only)
+### 6. Color System & CSS Custom Properties
 
-**Note:** CSS variables and inline styles **cannot be used** in the page builder - the WYSIWYG editor strips them. Colors are only available through predefined classes (`.btn--destructive`, `.text-error`, etc.).
+**Note:** Inline styles **cannot be used** in the page builder - the WYSIWYG editor strips them. However, `<style>` tags with CSS custom properties DO work.
 
-For theme developers who need to understand or modify the color system:
-- `vendor/oro/platform/src/Oro/Bundle/UIBundle/Resources/public/default/scss/settings/_colors.scss`
-- `public/build/default/css/stylebook.css` (compiled output with CSS variables)
+#### Source Files
+| File | Purpose |
+|------|---------|
+| `vendor/oro/platform/src/Oro/Bundle/UIBundle/Resources/public/default/scss/settings/_colors.scss` | Defines `$color-palette` SCSS map with all color values |
+| `vendor/oro/customer-portal/src/Oro/Bundle/FrontendBundle/Resources/public/default/scss/components/theme-colors.scss` | Generates CSS variables from `$color-palette` |
+| `public/build/default/css/styles.css` | Compiled CSS with all `--{section}-{key}` variables |
+
+#### How CSS Variables Are Generated
+
+The `theme-colors.scss` file uses an SCSS loop to generate all CSS custom properties:
+
+```scss
+:root {
+    @each $section-name, $section in $color-palette {
+        @each $key, $value in $section {
+            --#{$section-name}-#{$key}: #{$value};
+        }
+    }
+}
+```
+
+This generates variables like `--primary-main`, `--destructive-light`, `--neutral-grey1`, etc.
+
+#### Color Palette Sections
+
+The `$color-palette` map contains these sections (all variables are documented in `ai-css-reference.md`):
+
+| Section | Variables | Intent |
+|---------|-----------|--------|
+| `primary` | main, hover, active, disabled, light | Brand colors |
+| `secondary` | c1-c6, sale | Accent/promotional colors |
+| `neutral` | white-100/50/30/15, grey1-3, dark, focus | Structural backgrounds |
+| `text` | primary, secondary, disabled, inverse, link variants | Text colors |
+| `destructive` | light, base, main, dark, disabled, on-dark variants | Error/delete states |
+| `success` | light, dark | Success states |
+| `warning` | light, base, dark | Warning states |
+| `info` | light, dark | Informational states |
+
+#### Usage in Page Builder
+
+Since `<style>` tags work in the CMS, background colors can be applied by defining classes that map directly to variables:
+
+```html
+<style>
+.bg-primary-light { background-color: var(--primary-light); }
+</style>
+<div class="bg-primary-light offset-inner">Content</div>
+```
+
+**Rule:** Class names must directly reflect the variable name (`.bg-{variable-name}`).
 
 ## How to Update This Document
 
@@ -174,5 +243,5 @@ grep -c "\.grid-col-" public/build/default/css/styles.css
 
 ---
 
-*Last updated: 2026-01-22*
+*Last updated: 2026-01-26*
 *OroCommerce version: 6.1*

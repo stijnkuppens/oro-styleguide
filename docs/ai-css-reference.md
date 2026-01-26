@@ -14,8 +14,8 @@ This reference documents the **class names** and their **semantic intent**. The 
 
 | What's Stable | What Varies |
 |---------------|-------------|
-| Class names (`.btn--primary`) | Exact colors (client's brand) |
-| Semantic purpose ("destructive action") | Exact shade of red |
+| Class names (`.btn--default`) | Exact colors (client's brand) |
+| Semantic purpose ("destructive action") | Exact color values |
 | Grid structure (12 columns) | Gap sizes, breakpoint values |
 
 ### How to Use This Reference
@@ -42,7 +42,10 @@ Where hex values or pixel sizes appear in this document, they represent the **de
 5. [Content Template Classes](#content-template-classes)
 6. [Image & Media Classes](#image--media-classes)
 7. [Spacing & Offset Classes](#spacing--offset-classes)
-8. [Table Classes](#table-classes)
+8. [Status Label Classes](#status-label-classes)
+9. [Badge Classes](#badge-classes)
+10. [Table Classes](#table-classes)
+11. [CSS Custom Properties for Background Colors](#css-custom-properties-for-background-colors)
 
 ---
 
@@ -56,29 +59,29 @@ Where hex values or pixel sizes appear in this document, they represent the **de
 ### Style Variants
 | Class | Description |
 |-------|-------------|
-| `.btn--default` | Primary button with main brand color (teal) |
-| `.btn--outlined` | Transparent background with colored border |
-| `.btn--plain` | Transparent background and border, colored text only |
+| `.btn--default` | Primary button with main brand color |
+| `.btn--outlined` | Transparent background with primary border |
+| `.btn--plain` | Transparent background and border, primary text only |
 | `.btn--flat` | Flat button with underline on hover |
-| `.btn--neutral` | Neutral grey button |
-| `.btn--neutral-dark` | Darker neutral grey button |
-| `.btn--inverse` | White button for use on dark backgrounds |
+| `.btn--neutral` | Neutral button |
+| `.btn--neutral-dark` | Darker neutral button |
+| `.btn--inverse` | Inverse button for use on dark backgrounds |
 | `.btn--outlined-inverse` | Outlined button for dark backgrounds |
 | `.btn--plain-inverse` | Plain text button for dark backgrounds |
 | `.btn--flat-inverse` | Flat button for dark backgrounds |
-| `.btn--simple` | Simple text button with secondary color |
-| `.btn--simple-colored` | Simple button with primary color text |
+| `.btn--simple` | Simple text button with secondary styling |
+| `.btn--simple-colored` | Simple button with primary styling |
 | `.btn--simple-colored-inverse` | Simple colored button for dark backgrounds |
 | `.btn--text` | Text-only button appearance |
 
-### Destructive/Warning Variants
+### Destructive Variants
 | Class | Description |
 |-------|-------------|
-| `.btn--destructive` | Red button for destructive actions (delete, remove) |
-| `.btn--destructive-outlined` | Outlined red button |
-| `.btn--destructive-plain` | Plain text red button |
-| `.btn--destructive-flat` | Flat red button with underline |
-| `.btn--destructive-light` | Light red background button |
+| `.btn--destructive` | Destructive button for delete/remove actions |
+| `.btn--destructive-outlined` | Outlined destructive button |
+| `.btn--destructive-plain` | Plain text destructive button |
+| `.btn--destructive-flat` | Flat destructive button with underline |
+| `.btn--destructive-light` | Light destructive background button |
 | `.btn--simple-destructive` | Simple text destructive button |
 
 ### Size Modifiers
@@ -251,10 +254,10 @@ Where hex values or pixel sizes appear in this document, they represent the **de
 ### Text Color Variants
 | Class | Description |
 |-------|-------------|
-| `.text-success` | Success/green text color |
-| `.text-error` | Error/red text color |
-| `.extra-text` | Small secondary text (13px, lighter) |
-| `.extra-text-dark` | Small text in darker color |
+| `.text-success` | Success state text color |
+| `.text-error` | Error state text color |
+| `.extra-text` | Small secondary text (lighter) |
+| `.extra-text-dark` | Small text in darker shade |
 
 ### Special Typography
 | Class | Description |
@@ -432,6 +435,53 @@ These are root container classes for pre-built landing page templates:
 
 ---
 
+## Status Label Classes
+
+Status labels are small inline elements for displaying status information with colored backgrounds.
+
+### Base & Variants
+| Class | Description |
+|-------|-------------|
+| `.status-label` | Base status label with neutral background |
+| `.status-label--success` | Success/completed status |
+| `.status-label--progress` | In-progress status |
+| `.status-label--warning` | Warning status |
+| `.status-label--destructive` | Error/failed status |
+| `.status-label--info` | Informational status |
+| `.status-label--new_arrival` | New arrival indicator |
+| `.status-label--sale` | Sale/discount indicator |
+
+### Usage Example
+```html
+<span class="status-label status-label--success">Completed</span>
+<span class="status-label status-label--warning">Pending</span>
+<span class="status-label status-label--destructive">Failed</span>
+```
+
+---
+
+## Badge Classes
+
+Badges are small indicators typically used for counts or status dots.
+
+| Class | Description |
+|-------|-------------|
+| `.badge` | Base circular badge with primary background |
+| `.badge--inverse` | Inverted color scheme (light background) |
+| `.badge-square` | Square-shaped badge |
+| `.badge-square--offset-none` | Square badge without right margin |
+| `.badge-rectangle` | Rectangle-shaped badge for longer text |
+| `.badge-rectangle--align-start` | Rectangle badge aligned to start |
+
+### Usage Example
+```html
+<span class="badge">3</span>
+<span class="badge-square">5</span>
+<span class="badge-rectangle">New</span>
+```
+
+---
+
 ## Table Classes
 
 | Class | Description |
@@ -515,7 +565,7 @@ These are root container classes for pre-built landing page templates:
 5. **Grid is 12-column** - All column calculations are based on 12-column grid
 6. **Trust intent, not values** - Class names and their semantic purpose are stable; actual colors/sizes vary per client
 7. **No inline styles** - The page builder strips them; only classes work
-8. **Colors are class-based** - Use `.btn--destructive` for red buttons, `.text-error` for error text, etc.
+8. **Colors are class-based** - Use `.btn--destructive` for destructive actions, `.text-error` for error text, etc.
 9. **No custom colors** - Content editors cannot apply arbitrary colors; only predefined class colors are available
 
 ---
@@ -532,7 +582,153 @@ These are root container classes for pre-built landing page templates:
 
 ---
 
+## CSS Custom Properties for Background Colors
+
+When you need background colors beyond what `.extra-block-bg` provides, use `<style>` tags with CSS variables. Use **only for background-color**. All other styling (padding, spacing, typography) must come from existing classes.
+
+**Important:** Class names must directly reflect the variable used. This ensures consistency and makes the code self-documenting.
+
+### How to Define Background Classes
+
+```html
+<style>
+.bg-primary-light { background-color: var(--primary-light); }
+.bg-neutral-dark { background-color: var(--neutral-dark); }
+.bg-success-light { background-color: var(--success-light); }
+</style>
+```
+
+### Available Background Variables
+
+#### Primary (Brand)
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-primary-main` | `var(--primary-main)` | Primary brand background |
+| `.bg-primary-hover` | `var(--primary-hover)` | Primary hover state background |
+| `.bg-primary-active` | `var(--primary-active)` | Primary active/pressed state background |
+| `.bg-primary-disabled` | `var(--primary-disabled)` | Primary disabled state background |
+| `.bg-primary-light` | `var(--primary-light)` | Light primary tint for sections |
+
+#### Secondary (Promotional/Accents)
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-secondary-c1` | `var(--secondary-c1)` | Secondary accent 1 |
+| `.bg-secondary-c2` | `var(--secondary-c2)` | Secondary accent 2 |
+| `.bg-secondary-c3` | `var(--secondary-c3)` | Secondary accent 3 |
+| `.bg-secondary-c4` | `var(--secondary-c4)` | Secondary accent 4 |
+| `.bg-secondary-c5` | `var(--secondary-c5)` | Secondary accent 5 |
+| `.bg-secondary-c6` | `var(--secondary-c6)` | Secondary accent 6 |
+| `.bg-secondary-sale` | `var(--secondary-sale)` | Sale/promotion background |
+
+#### Neutral (Structural)
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-neutral-white-100` | `var(--neutral-white-100)` | White background (fully opaque) |
+| `.bg-neutral-white-50` | `var(--neutral-white-50)` | Semi-transparent white overlay |
+| `.bg-neutral-white-30` | `var(--neutral-white-30)` | Light transparent white overlay |
+| `.bg-neutral-white-15` | `var(--neutral-white-15)` | Subtle transparent white overlay |
+| `.bg-neutral-grey1` | `var(--neutral-grey1)` | Lightest neutral background |
+| `.bg-neutral-grey2` | `var(--neutral-grey2)` | Light neutral background |
+| `.bg-neutral-grey3` | `var(--neutral-grey3)` | Medium neutral background |
+| `.bg-neutral-dark` | `var(--neutral-dark)` | Dark background (use with inverse buttons/text) |
+| `.bg-neutral-focus` | `var(--neutral-focus)` | Focus state indicator background |
+
+#### Text (For text-colored backgrounds)
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-text-primary` | `var(--text-primary)` | Primary text color as background |
+| `.bg-text-secondary` | `var(--text-secondary)` | Secondary text color as background |
+| `.bg-text-disabled` | `var(--text-disabled)` | Disabled text color as background |
+| `.bg-text-inverse` | `var(--text-inverse)` | Inverse text color as background |
+| `.bg-text-inverse-70` | `var(--text-inverse-70)` | Semi-transparent inverse background |
+| `.bg-text-link` | `var(--text-link)` | Link color as background |
+| `.bg-text-link-hover` | `var(--text-link-hover)` | Link hover color as background |
+| `.bg-text-link-hover-on-dark` | `var(--text-link-hover-on-dark)` | Link hover on dark as background |
+
+#### State - Destructive (Error)
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-destructive-light` | `var(--destructive-light)` | Light error/destructive background |
+| `.bg-destructive-light-on-dark` | `var(--destructive-light-on-dark)` | Light destructive for dark contexts |
+| `.bg-destructive-base` | `var(--destructive-base)` | Base destructive background |
+| `.bg-destructive-main` | `var(--destructive-main)` | Main destructive background |
+| `.bg-destructive-main-on-dark` | `var(--destructive-main-on-dark)` | Main destructive for dark contexts |
+| `.bg-destructive-dark` | `var(--destructive-dark)` | Dark destructive background |
+| `.bg-destructive-disabled` | `var(--destructive-disabled)` | Disabled destructive state background |
+
+#### State - Success
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-success-light` | `var(--success-light)` | Light success message background |
+| `.bg-success-dark` | `var(--success-dark)` | Dark success background |
+
+#### State - Warning
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-warning-light` | `var(--warning-light)` | Light warning message background |
+| `.bg-warning-base` | `var(--warning-base)` | Base warning background |
+| `.bg-warning-dark` | `var(--warning-dark)` | Dark warning background |
+
+#### State - Info
+| Class Pattern | Variable | Intent |
+|---------------|----------|--------|
+| `.bg-info-light` | `var(--info-light)` | Light informational background |
+| `.bg-info-dark` | `var(--info-dark)` | Dark informational background |
+
+### Usage Examples
+
+#### Feature Section
+```html
+<style>
+.bg-primary-light { background-color: var(--primary-light); }
+</style>
+<div class="bg-primary-light offset-inner">
+    <h2 class="h2 text-center no-offset">Our Features</h2>
+</div>
+```
+
+#### Dark Section
+```html
+<style>
+.bg-neutral-dark { background-color: var(--neutral-dark); }
+</style>
+<div class="bg-neutral-dark offset-inner text-center">
+    <h1 class="h1">Welcome</h1>
+    <a href="#" class="btn btn--inverse">Shop Now</a>
+</div>
+```
+
+#### Info Notice
+```html
+<style>
+.bg-info-light { background-color: var(--info-light); }
+</style>
+<div class="bg-info-light offset-inner rounded">
+    <p class="no-offset"><strong>Note:</strong> Free shipping on orders over $50</p>
+</div>
+```
+
+#### Sale Banner
+```html
+<style>
+.bg-secondary-sale { background-color: var(--secondary-sale); }
+</style>
+<div class="bg-secondary-sale offset-inner text-center">
+    <strong>SALE!</strong> Up to 50% off selected items
+</div>
+```
+
+### Rules for AI Implementation
+
+1. **Only use for `background-color`** - No padding, margin, borders, or other styles
+2. **Class name must match variable** - `.bg-primary-light` uses `var(--primary-light)`
+3. **Use existing classes for layout** - `.offset-inner`, `.rounded`, `.text-center`, grid classes
+4. **For dark backgrounds** - Pair with `.btn--inverse` for buttons
+5. **Combine with utility classes** - Background class + existing padding/typography classes
+
+---
+
 *Document generated from OroCommerce 6.1 default theme*
 *Class names are stable across installations; values are client-specific*
-*Last updated: 2026-01-22*
+*Last updated: 2026-01-26*
 *See ai-css-reference-readme.md for extraction methodology*
